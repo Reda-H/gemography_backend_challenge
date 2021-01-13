@@ -17,7 +17,7 @@ router.get('/', function (req, res, next) {
   getRepos(priorDateFormatted).then((response) => {
     
     let listOfLanguages = [];
-    let listOfReposPerLanguages = [];
+    let listOfReposPerLanguage = [];
     // Here we get the language of each repository and push them in a signle array to work with
     response.items.forEach((repository, index) => {
       listOfLanguages.push(repository.language);
@@ -32,13 +32,13 @@ router.get('/', function (req, res, next) {
     //  'repositories': Array (Repositories that use the language)
     // }
     distinctLanguages.forEach((language => {
-      listOfReposPerLanguages.push({ 'language': language, 'occurrences': 0, 'repositories': [] })
+      listOfReposPerLanguage.push({ 'language': language, 'occurrences': 0, 'repositories': [] })
     }));
 
-    // Here we populate the listOfReposPerLanguages's values, by scanning the list of repositories, 
+    // Here we populate the listOfReposPerLanguage's values, by scanning the list of repositories, 
     // counting the languages and pushing the repositories
     response.items.forEach((repository => {
-      listOfReposPerLanguages.find((value, index) => {
+      listOfReposPerLanguage.find((value, index) => {
         if (value.language === repository.language){
           value.repositories.push(repository);
           value.occurrences++;
@@ -50,7 +50,7 @@ router.get('/', function (req, res, next) {
     res.status(200).json({
       endDate: todayFormatted,
       startDate: priorDateFormatted,
-      result: listOfReposPerLanguages,
+      result: listOfReposPerLanguage,
     });
   });
 
