@@ -4,26 +4,18 @@ A REST Api to retrieve 100 trending Repositories from the last 30 days, count th
 
 By accessing the endpoint: http://127.0.0.1:3000/, you can receive the reponse in the following format:
 
+```json
 {
-
-    "endDate": "YYYY-MM-DD",
-    
+    "endDate": "YYYY-MM-DD",   
     "startDate": "YYYY-MM-DD",
-    
     "result": [
-    
-        {
-        
-            "language": 'JavaScript',
-            
+        {  
+            "language": "JavaScript",
             "occurrences": 22,
-            
             "repositories": [...]
-            
         },{..}],
-        
 }
-
+```
 
 ---
 ## Requirements
@@ -46,7 +38,7 @@ Also, be sure to have `git` available in your PATH, `npm` might need it (You can
 ## Install
 
     $ git clone https://github.com/Reda-H/gemography_backend_challenge
-    $ cd PROJECT_TITLE
+    $ cd gemography_backend_challenge
     $ yarn install
 
 ## Running the project
