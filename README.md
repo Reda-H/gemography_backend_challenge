@@ -5,15 +5,25 @@ A REST Api to retrieve 100 trending Repositories from the last 30 days, count th
 By accessing the endpoint: http://127.0.0.1:3000/, you can receive the reponse in the following format:
 
 {
+
     "endDate": "YYYY-MM-DD",
+    
     "startDate": "YYYY-MM-DD",
+    
     "result": [
+    
         {
+        
             "language": 'JavaScript',
+            
             "occurrences": 22,
+            
             "repositories": [...]
+            
         },{..}],
+        
 }
+
 
 ---
 ## Requirements
