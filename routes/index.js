@@ -4,7 +4,7 @@ var router = express.Router();
 const axios = require('axios');
 
 /* GEt. */
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
 
   // Here we formulate the date needed for the fetch request
   let today = new Date();
@@ -14,44 +14,44 @@ router.get('/', function (req, res, next) {
 
   // Here we call the fetch function (getRepos) and use .then to work with the data and send back a response
   // We use .then to make sure that the asynchronous function returns before we do anything
-  getRepos(priorDateFormatted).then((response) => {
-    
-    let listOfLanguages = [];
-    let listOfReposPerLanguage = [];
-    // Here we get the language of each repository and push them in a signle array to work with
-    response.items.forEach((repository, index) => {
-      listOfLanguages.push(repository.language);
-    });
-    // Here we filter the ARRAY of languages through the distinct function created below 
-    let distinctLanguages = listOfLanguages.filter(distinct);
+  let repos = await getRepos(priorDateFormatted);
+  
 
-    // Here we construct the object that we will return with the following form: 
-    // {
-    //  'language' : String (language name),
-    //  'occurrences': Number (number of occurrences of the language)
-    //  'repositories': Array (Repositories that use the language)
-    // }
-    distinctLanguages.forEach((language => {
-      listOfReposPerLanguage.push({ 'language': language, 'occurrences': 0, 'repositories': [] })
-    }));
+  let listOfLanguages = [];
+  let listOfReposPerLanguage = [];
+  // Here we get the language of each repository and push them in a signle array to work with
+  repos.items.forEach((repository, index) => {
+    listOfLanguages.push(repository.language);
+  });
+  // Here we filter the ARRAY of languages through the distinct function created below 
+  let distinctLanguages = listOfLanguages.filter(distinct);
 
-    // Here we populate the listOfReposPerLanguage's values, by scanning the list of repositories, 
-    // counting the languages and pushing the repositories
-    response.items.forEach((repository => {
-      listOfReposPerLanguage.find((value, index) => {
-        if (value.language === repository.language){
-          value.repositories.push(repository);
-          value.occurrences++;
-        }
-      })
-    }))
+  // Here we construct the object that we will return with the following form: 
+  // {
+  //  'language' : String (language name),
+  //  'occurrences': Number (number of occurrences of the language)
+  //  'repositories': Array (Repositories that use the language)
+  // }
+  distinctLanguages.forEach((language => {
+    listOfReposPerLanguage.push({ 'language': language, 'occurrences': 0, 'repositories': [] })
+  }));
 
-    // Here we formulate our response
-    res.status(200).json({
-      endDate: todayFormatted,
-      startDate: priorDateFormatted,
-      result: listOfReposPerLanguage,
-    });
+  // Here we populate the listOfReposPerLanguage's values, by scanning the list of repositories, 
+  // counting the languages and pushing the repositories
+  repos.items.forEach((repository => {
+    listOfReposPerLanguage.find((value, index) => {
+      if (value.language === repository.language) {
+        value.repositories.push(repository);
+        value.occurrences++;
+      }
+    })
+  }))
+
+  // Here we formulate our response
+  res.status(200).json({
+    endDate: todayFormatted,
+    startDate: priorDateFormatted,
+    result: listOfReposPerLanguage,
   });
 
 });
