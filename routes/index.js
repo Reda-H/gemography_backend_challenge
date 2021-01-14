@@ -13,9 +13,8 @@ router.get('/', async function (req, res, next) {
   let priorDateFormatted = dateFormat(priorDate);
 
   // Here we call the fetch function (getRepos) and use .then to work with the data and send back a response
-  // We use .then to make sure that the asynchronous function returns before we do anything
+  // We use await to make sure that the asynchronous function returns before we do anything
   let repos = await getRepos(priorDateFormatted);
-  
 
   let listOfLanguages = [];
   let listOfReposPerLanguage = [];
